@@ -1,7 +1,7 @@
 name: App With Github Actions CI/CD
 
 on:
-  workflow_dispatch:
+  push:
     branches: [ "main" ]
   pull_request:
     branches: [ "main" ]
@@ -53,7 +53,7 @@ jobs:
         target: "/home/ubuntu/app"
        
     - name: Execute deployment script
-      uses: appleboy/ssh-action@v1.2.2
+      uses: appleboy/ssh-action@v1.2.0
       with:
         host: ${{ secrets.EC2_HOST }}
         username: ${{ secrets.EC2_USERNAME }}
@@ -64,3 +64,4 @@ jobs:
           sudo fuser -k -n tcp 8080 || true
           cd /home/ubuntu/app/deploy
           nohup java -jar app.jar > ./output.log 2>&1 &
+
